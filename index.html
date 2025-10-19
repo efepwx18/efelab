@@ -12,6 +12,7 @@ body {
     background-color: #1a0d2a;
     color: #f0f0f0;
     overflow-x: hidden;
+    position: relative;
 }
 
 /* Header */
@@ -64,6 +65,9 @@ section.visible {
     padding: 15px 25px;
     border-radius: 15px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 .hobby:hover {
@@ -72,43 +76,59 @@ section.visible {
     cursor: pointer;
 }
 .hobby i {
-    margin-right: 8px;
+    margin-left: 8px; /* simgeyi metnin sağına aldık */
+    margin-right: 0;
     animation: float 1.5s infinite alternate;
-}
-@keyframes float {
-    0% { transform: translateY(0px); }
-    100% { transform: translateY(-5px); }
 }
 
 /* Projects */
-#projects {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+.projects-container {
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
 .project {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
     background: #2e0e4d;
-    padding: 20px;
+    padding: 15px 25px;
     border-radius: 15px;
     transition: transform 0.3s, box-shadow 0.3s;
+    font-size: 1.1em;
 }
 .project:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
+}
+.project i {
+    animation: float 1.5s infinite alternate;
+    font-size: 18px;
+    margin-left: 8px;
 }
 
 /* Social */
+#social {
+    margin-top: 20px;
+}
 #social a {
-    color: #d8b0ff;
-    text-decoration: none;
-    font-weight: bold;
-    margin-right: 20px;
-    font-size: 1.2em;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #2e0e4d;
+    border-radius: 50%;
+    color: #d8b0ff;
+    margin-right: 15px;
+    font-size: 1.5em;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.3s;
 }
+#social a span { display: none; }
 #social a:hover {
+    background: #9b30ff;
     color: #fff;
 }
 
@@ -132,64 +152,92 @@ button {
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s;
-    color: #fff;
 }
 button:hover {
     transform: scale(1.05);
     box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
 }
 
-/* Minimalist audio button */
+/* Audio controls */
 .audio-controls {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: #2e0e4d;
-    padding: 8px;
-    border-radius: 50%;
+    bottom: 15px;
+    left: 15px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 10px #6a0dad, 0 0 20px #9b30ff;
+    background: rgba(46,14,77,0.6);
+    padding: 6px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px #6a0dad;
+}
+.audio-controls div {
+    font-size:10px;
+    color:#cfaeff;
+    margin-bottom:3px;
+    opacity:0.5;
 }
 .audio-controls button {
-    border-radius: 50%;
-    padding: 8px 10px;
+    padding:6px 8px;
+    font-size:14px;
+    border:none;
+    border-radius:8px;
+    background:#9b30ff;
+    color:#fff;
+    cursor:pointer;
+    transition: transform 0.2s;
+}
+
+/* Scroll-top button */
+#scrollTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
     background: #9b30ff;
-    box-shadow: none;
-    font-size: 16px;
     color: #fff;
     border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
 }
 
 /* Footer */
 footer {
     text-align: center;
-    padding: 15px;
-    background: #2e0e4d;
+    padding: 20px;
     color: #cfaeff;
     font-size: 0.9em;
-    margin-top: 50px;
-    box-shadow: 0 -2px 10px #6a0dad;
 }
 
-/* Confetti */
-.confetti {
-    position: absolute;
-    width: 8px;
-    height: 8px;
+/* Particle background */
+#particles {
+    position: fixed;
+    top:0; left:0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    opacity: 0.9;
-    border-radius: 50%;
-    animation: confettiFall 1s forwards;
+    z-index: -1;
 }
-@keyframes confettiFall {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(200px) rotate(360deg); opacity: 0; }
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #9b30ff;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: particleMove 10s linear infinite;
+}
+@keyframes particleMove {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-1000px) translateX(500px); }
 }
 </style>
 </head>
 <body>
+
+<div id="particles"></div>
 
 <header>
     <img src="https://r.resimlink.com/1UWyFE-XPxo.jpg" alt="Efe">
@@ -198,29 +246,31 @@ footer {
 
 <section id="about">
     <h2>Hakkımda</h2>
-    <p>Merhaba! Ben Efe. Oyun oynamayı, müzik dinlemeyi ve arkadaşlarımla sohbet etmeyi çok severim.</p>
+    <p>Merhaba! Ben Efe, web tasarımcıyım. Oyun oynamayı, müzik dinlemeyi ve arkadaşlarımla sohbet etmeyi çok severim.</p>
 </section>
 
 <section id="hobbies">
     <h2>Hobilerim</h2>
     <div class="hobbies">
-        <div class="hobby"><i class="fas fa-gamepad"></i>Oyun Oynamak</div>
-        <div class="hobby"><i class="fas fa-music"></i>Müzik Dinlemek</div>
-        <div class="hobby"><i class="fas fa-comments"></i>Arkadaşlarla Konuşmak</div>
+        <div class="hobby">Oyun Oynamak <i class="fas fa-gamepad"></i></div>
+        <div class="hobby">Müzik Dinlemek <i class="fas fa-music"></i></div>
+        <div class="hobby">Arkadaşlarla Konuşmak <i class="fas fa-comments"></i></div>
     </div>
 </section>
 
 <section id="projects">
     <h2>Projelerim</h2>
-    <div class="project">Proje 1: Kendi oyunum</div>
-    <div class="project">Proje 2: Web tasarım örneği</div>
-    <div class="project">Proje 3: Müzik koleksiyonu</div>
+    <div class="projects-container">
+        <div class="project">Mini Oyun Projesi <i class="fas fa-gamepad"></i></div>
+        <div class="project">Kişisel Web Sitesi <i class="fas fa-laptop-code"></i></div>
+        <div class="project">Müzik Arşivi <i class="fas fa-music"></i></div>
+    </div>
 </section>
 
 <section id="social">
     <h2>Sosyal Medya</h2>
-    <a href="https://www.instagram.com/efepwx18" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-    <a href="https://t.me/wkrnc" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+    <a href="https://www.instagram.com/efepwx18" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://t.me/wkrnc" target="_blank"><i class="fab fa-telegram"></i></a>
 </section>
 
 <section id="contact">
@@ -234,57 +284,40 @@ footer {
     <p id="status"></p>
 </section>
 
-<!-- Audio -->
 <div class="audio-controls">
-    <button id="playPause">⏸</button>
-    <audio id="bgMusic" autoplay loop>
+    <div>Şarkıyı buradan açabilirsin</div>
+    <button id="playPause">▶️</button>
+    <audio id="bgMusic" loop>
         <source src="https://files.catbox.moe/22vyoh.mp3" type="audio/mpeg">
         Tarayıcın ses oynatmayı desteklemiyor.
     </audio>
 </div>
 
+<button id="scrollTopBtn">⬆️</button>
+
 <footer>
-    © 2025 Efe – Tüm hakları saklıdır.
+    2025 Efe. Tüm hakları saklıdır.
 </footer>
 
 <script>
-// Bölüm animasyonu
+// Scroll Top
+const scrollBtn = document.getElementById('scrollTopBtn');
+scrollBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+// Audio
+const music = document.getElementById('bgMusic');
+const playBtn = document.getElementById('playPause');
+playBtn.addEventListener('click', () => {
+    if(music.paused){ music.play(); playBtn.textContent='⏸️'; }
+    else { music.pause(); playBtn.textContent='▶️'; }
+});
+
+// Fade-in sections
 const sections = document.querySelectorAll('section');
 window.addEventListener('scroll', () => {
     sections.forEach(sec => {
-        const top = sec.getBoundingClientRect().top;
-        if (top < window.innerHeight - 100) {
+        if(window.scrollY + window.innerHeight > sec.offsetTop + 100){
             sec.classList.add('visible');
-        }
-    });
-});
-
-// Müzik kontrolü
-const music = document.getElementById('bgMusic');
-const playPause = document.getElementById('playPause');
-let playing = true;
-playPause.addEventListener('click', () => {
-    if (playing) {
-        music.pause();
-        playPause.textContent = "▶️";
-    } else {
-        music.play();
-        playPause.textContent = "⏸";
-    }
-    playing = !playing;
-});
-
-// Konfeti efekti (hobiler tıklanınca)
-document.querySelectorAll('.hobby').forEach(hobby => {
-    hobby.addEventListener('click', (e) => {
-        for (let i = 0; i < 30; i++) {
-            const confetti = document.createElement('div');
-            confetti.classList.add('confetti');
-            confetti.style.left = e.pageX + 'px';
-            confetti.style.top = e.pageY + 'px';
-            confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 60%)`;
-            document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 1000);
         }
     });
 });
@@ -297,7 +330,17 @@ form.addEventListener('submit', function(e) {
     status.textContent = "Mesaj gönderildi!";
     form.reset();
 });
-</script>
 
+// Particles
+for(let i=0;i<100;i++){
+    const p = document.createElement('div');
+    p.classList.add('particle');
+    p.style.left = Math.random()*100+'%';
+    p.style.top = Math.random()*100+'%';
+    p.style.width = p.style.height = (2+Math.random()*3)+'px';
+    p.style.animationDuration = (5+Math.random()*5)+'s';
+    document.getElementById('particles').appendChild(p);
+}
+</script>
 </body>
 </html>
