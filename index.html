@@ -4,17 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Efe'nin Profili</title>
-<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* San Francisco font */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0;
     background-color: #1a0d2a;
     color: #f0f0f0;
     overflow-x: hidden;
-    position: relative;
 }
 
 /* Header */
@@ -135,6 +132,7 @@ button {
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s;
+    color: #fff;
 }
 button:hover {
     transform: scale(1.05);
@@ -160,52 +158,38 @@ button:hover {
     background: #9b30ff;
     box-shadow: none;
     font-size: 16px;
-}
-
-/* Scroll-top button */
-#scrollTopBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px;
-    background: #9b30ff;
     color: #fff;
     border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 16px;
-    box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
-    display: none;
 }
 
-/* Particle background */
-#particles {
-    position: fixed;
-    top:0; left:0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #2e0e4d;
+    color: #cfaeff;
+    font-size: 0.9em;
+    margin-top: 50px;
+    box-shadow: 0 -2px 10px #6a0dad;
 }
-.particle {
+
+/* Confetti */
+.confetti {
     position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #9b30ff;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    opacity: 0.9;
     border-radius: 50%;
-    opacity: 0.7;
-    animation: particleMove 10s linear infinite;
+    animation: confettiFall 1s forwards;
 }
-@keyframes particleMove {
-    0% { transform: translateY(0) translateX(0); }
-    100% { transform: translateY(-1000px) translateX(500px); }
+@keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(200px) rotate(360deg); opacity: 0; }
 }
 </style>
 </head>
 <body>
-
-<!-- Particle background -->
-<div id="particles"></div>
 
 <header>
     <img src="https://r.resimlink.com/1UWyFE-XPxo.jpg" alt="Efe">
@@ -250,41 +234,59 @@ button:hover {
     <p id="status"></p>
 </section>
 
-<!-- Audio controls -->
+<!-- Audio -->
 <div class="audio-controls">
     <button id="playPause">⏸</button>
-    <iframe id="backgroundMusic" width="0" height="0" 
-        src="https://www.youtube.com/embed/tzhKxUxsIJs?autoplay=1&loop=1&playlist=tzhKxUxsIJs" 
-        frameborder="0" allow="autoplay" allowfullscreen>
-    </iframe>
+    <audio id="bgMusic" autoplay loop>
+        <source src="https://files.catbox.moe/22vyoh.mp3" type="audio/mpeg">
+        Tarayıcın ses oynatmayı desteklemiyor.
+    </audio>
 </div>
 
-<!-- Scroll top button -->
-<button id="scrollTopBtn">↑</button>
+<footer>
+    © 2025 Efe – Tüm hakları saklıdır.
+</footer>
 
 <script>
-// Scroll animasyonu
+// Bölüm animasyonu
 const sections = document.querySelectorAll('section');
 window.addEventListener('scroll', () => {
     sections.forEach(sec => {
         const top = sec.getBoundingClientRect().top;
-        if(top < window.innerHeight - 100){
+        if (top < window.innerHeight - 100) {
             sec.classList.add('visible');
         }
     });
-
-    // Scroll-top butonu
-    const scrollBtn = document.getElementById('scrollTopBtn');
-    if(window.scrollY > 300){
-        scrollBtn.style.display = 'block';
-    } else {
-        scrollBtn.style.display = 'none';
-    }
 });
 
-// Scroll top
-document.getElementById('scrollTopBtn').addEventListener('click', () => {
-    window.scrollTo({top:0, behavior:'smooth'});
+// Müzik kontrolü
+const music = document.getElementById('bgMusic');
+const playPause = document.getElementById('playPause');
+let playing = true;
+playPause.addEventListener('click', () => {
+    if (playing) {
+        music.pause();
+        playPause.textContent = "▶️";
+    } else {
+        music.play();
+        playPause.textContent = "⏸";
+    }
+    playing = !playing;
+});
+
+// Konfeti efekti (hobiler tıklanınca)
+document.querySelectorAll('.hobby').forEach(hobby => {
+    hobby.addEventListener('click', (e) => {
+        for (let i = 0; i < 30; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = e.pageX + 'px';
+            confetti.style.top = e.pageY + 'px';
+            confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 60%)`;
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 1000);
+        }
+    });
 });
 
 // Form demo
@@ -292,35 +294,10 @@ const form = document.getElementById('contactForm');
 const status = document.getElementById('status');
 form.addEventListener('submit', function(e) {
     e.preventDefault();
-    status.textContent = "Mesaj gönderildi! (Bu demo, gerçek gönderim yok)";
+    status.textContent = "Mesaj gönderildi!";
     form.reset();
 });
-
-// Müzik play/pause
-const iframe = document.getElementById('backgroundMusic');
-const playPauseBtn = document.getElementById('playPause');
-let isPlaying = true;
-playPauseBtn.addEventListener('click', () => {
-    if(isPlaying){
-        iframe.src = "";
-        playPauseBtn.textContent = "▶️";
-    } else {
-        iframe.src = "https://www.youtube.com/embed/tzhKxUxsIJs?autoplay=1&loop=1&playlist=tzhKxUxsIJs";
-        playPauseBtn.textContent = "⏸";
-    }
-    isPlaying = !isPlaying;
-});
-
-// Particles
-const particleContainer = document.getElementById('particles');
-for(let i=0;i<50;i++){
-    const p = document.createElement('div');
-    p.classList.add('particle');
-    p.style.top = Math.random()*window.innerHeight+'px';
-    p.style.left = Math.random()*window.innerWidth+'px';
-    particleContainer.appendChild(p);
-}
 </script>
 
 </body>
-    </html>
+</html>
