@@ -6,20 +6,95 @@
 <title>Efe'nin Profili</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
+/* 1. CSS DEĞİŞKENLERİ - TEMEL RENKLER */
+:root {
+    /* Koyu Tema (Varsayılan) */
+    --color-bg-primary: #1a0d2a;
+    --color-bg-secondary: #2e0e4d;
+    --color-text-primary: #f0f0f0;
+    --color-text-secondary: #cfaeff;
+    --color-accent-dark: #6a0dad;
+    --color-accent-light: #9b30ff;
+    --color-header-gradient: linear-gradient(90deg, var(--color-accent-dark), var(--color-accent-light));
+}
+
+/* 2. AÇIK TEMA SINIFI */
+.light-mode {
+    --color-bg-primary: #f0f0f0;
+    --color-bg-secondary: #ffffff;
+    --color-text-primary: #333333;
+    --color-text-secondary: #6a0dad;
+    --color-accent-dark: #6a0dad;
+    --color-accent-light: #9b30ff;
+    --color-header-gradient: linear-gradient(90deg, var(--color-accent-dark), var(--color-accent-light));
+}
+
+/* 3. TEMEL STİLLER (DEĞİŞKENLERİ KULLANIR) */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0;
-    background-color: #1a0d2a;
-    color: #f0f0f0;
+    background-color: var(--color-bg-primary); 
+    color: var(--color-text-primary); 
     overflow-x: hidden;
     position: relative;
+    transition: background-color 0.5s, color 0.5s; 
+}
+
+/* Reading Progress Bar */
+#progressBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--color-accent-light);
+    z-index: 9999;
+    box-shadow: 0 0 10px var(--color-accent-light);
+}
+
+/* Sticky Navigation */
+#stickyNav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--color-bg-primary); 
+    color: var(--color-text-primary);
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transform: translateY(-100%); 
+    transition: transform 0.3s ease-out;
+    z-index: 998; /* Tema butonundan biraz altta kalmalı */
+}
+#stickyNav.visible {
+    transform: translateY(0); 
+}
+.nav-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--color-accent-light);
+}
+.nav-links a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    margin-left: 20px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: color 0.3s, background 0.3s;
+}
+.nav-links a:hover {
+    background: var(--color-accent-light);
+    color: #fff;
 }
 
 /* Header */
 header {
     text-align: center;
     padding: 30px 20px;
-    background: linear-gradient(90deg, #6a0dad, #9b30ff);
+    background: var(--color-header-gradient); 
 }
 header img {
     width: 150px;
@@ -31,7 +106,7 @@ header h1 {
     margin: 10px 0 0;
     font-size: 2.5em;
     color: #fff;
-    text-shadow: 1px 1px 5px #9b30ff;
+    text-shadow: 1px 1px 5px var(--color-accent-light); 
 }
 
 /* Sections */
@@ -48,63 +123,43 @@ section.visible {
     transform: translateY(0);
 }
 
-/* About */
-#about p {
-    font-size: 1.2em;
-    line-height: 1.6;
-}
-
-/* Hobbies */
-.hobbies {
+/* ORTAK KART STİLİ (Skills, Hobbies, Projects için kullanılır) */
+.skills-container, .hobbies-container, .projects-container {
     display: flex;
-    gap: 20px;
     flex-wrap: wrap;
+    gap: 15px;
 }
-.hobby {
-    background: #2e0e4d;
-    padding: 15px 25px;
-    border-radius: 15px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.hobby:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
-    cursor: pointer;
-}
-.hobby i {
-    margin-left: 8px; /* simgeyi metnin sağına aldık */
-    margin-right: 0;
-    animation: float 1.5s infinite alternate;
-}
-
-/* Projects */
-.projects-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-.project {
+.skill-item, .hobby-item, .project-card {
+    background: var(--color-bg-secondary);
+    padding: 12px 20px;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
-    justify-content: flex-start;
-    background: #2e0e4d;
-    padding: 15px 25px;
-    border-radius: 15px;
-    transition: transform 0.3s, box-shadow 0.3s;
     font-size: 1.1em;
+    font-weight: bold;
+    color: var(--color-text-primary);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    text-decoration: none; 
+    cursor: pointer;
 }
-.project:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
+.skill-item:hover, .hobby-item:hover, .project-card:hover {
+    transform: scale(1.05);
+    background: var(--color-accent-dark);
+    color: #fff;
+    box-shadow: 0 0 20px var(--color-accent-light), 0 0 40px var(--color-accent-dark);
 }
-.project i {
-    animation: float 1.5s infinite alternate;
-    font-size: 18px;
-    margin-left: 8px;
+.skill-item i, .hobby-item i, .project-card i {
+    margin-right: 10px;
+    font-size: 1.5em;
+    color: var(--color-accent-light);
+    transition: color 0.3s;
+}
+.light-mode .skill-item i, .light-mode .hobby-item i, .light-mode .project-card i {
+    color: var(--color-accent-dark);
+}
+.skill-item:hover i, .hobby-item:hover i, .project-card:hover i {
+    color: #fff; 
 }
 
 /* Social */
@@ -117,7 +172,7 @@ section.visible {
     justify-content: center;
     width: 40px;
     height: 40px;
-    background: #2e0e4d;
+    background: var(--color-bg-secondary); 
     border-radius: 50%;
     color: #d8b0ff;
     margin-right: 15px;
@@ -126,9 +181,11 @@ section.visible {
     overflow: hidden;
     transition: all 0.3s;
 }
-#social a span { display: none; }
+.light-mode #social a {
+    color: var(--color-accent-dark); 
+}
 #social a:hover {
-    background: #9b30ff;
+    background: var(--color-accent-light); 
     color: #fff;
 }
 
@@ -138,24 +195,28 @@ form {
     flex-direction: column;
     gap: 10px;
     max-width: 400px;
+    /* İletişim bölümündeki bozulmayı gidermek için min-height verebiliriz ancak genellikle gerekmez */
 }
 input, textarea {
     padding: 10px;
     border-radius: 5px;
     border: none;
+    background-color: var(--color-bg-secondary); /* Arkaplan rengini temaya uydur */
+    color: var(--color-text-primary);
 }
 button {
     padding: 10px;
-    background: #9b30ff;
+    background: var(--color-accent-light); 
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s;
+    color: #fff;
 }
 button:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
+    box-shadow: 0 0 10px var(--color-accent-light), 0 0 20px var(--color-accent-dark); 
 }
 
 /* Audio controls */
@@ -166,23 +227,24 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: rgba(46,14,77,0.6);
+    background: rgba(46,14,77,0.8); /* Opaklık artırıldı */
     padding: 6px;
     border-radius: 10px;
-    box-shadow: 0 0 8px #6a0dad;
+    box-shadow: 0 0 8px var(--color-accent-dark); 
+    z-index: 1001; /* KRİTİK DÜZELTME: Diğer sabit elementlerin üstünde olmalı */
 }
 .audio-controls div {
-    font-size:10px;
-    color:#cfaeff;
+    font-size:0.9em;
+    color:var(--color-text-secondary); 
     margin-bottom:3px;
-    opacity:0.5;
+    opacity:0.7;
 }
 .audio-controls button {
     padding:6px 8px;
     font-size:14px;
     border:none;
     border-radius:8px;
-    background:#9b30ff;
+    background:var(--color-accent-light); 
     color:#fff;
     cursor:pointer;
     transition: transform 0.2s;
@@ -194,21 +256,55 @@ button:hover {
     bottom: 20px;
     right: 20px;
     padding: 10px;
-    background: #9b30ff;
+    background: var(--color-accent-light); 
     color: #fff;
     border: none;
     border-radius: 50%;
     cursor: pointer;
     font-size: 16px;
-    box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
+    box-shadow: 0 0 10px var(--color-accent-light), 0 0 20px var(--color-accent-dark); 
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1000; /* KRİTİK DÜZELTME: Konumu düzeltildi */
+}
+#scrollTopBtn.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 20px;
-    color: #cfaeff;
+    color: var(--color-text-secondary); 
     font-size: 0.9em;
+}
+
+/* TEMA DEĞİŞTİRME BUTONU STİLİ */
+#themeToggleBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-accent-light);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 1002; /* KRİTİK DÜZELTME: En üstte olmalı */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+#themeToggleBtn:hover {
+    background: var(--color-accent-light);
+    color: #fff;
 }
 
 /* Particle background */
@@ -224,7 +320,7 @@ footer {
     position: absolute;
     width: 4px;
     height: 4px;
-    background: #9b30ff;
+    background: var(--color-accent-light); 
     border-radius: 50%;
     opacity: 0.7;
     animation: particleMove 10s linear infinite;
@@ -237,7 +333,24 @@ footer {
 </head>
 <body>
 
+<div id="progressBar"></div>
+
+<nav id="stickyNav">
+    <span class="nav-brand">Efe</span>
+    <div class="nav-links">
+        <a href="#about">Hakkımda</a>
+        <a href="#skills">Yetenekler</a>
+        <a href="#hobbies">Hobiler</a>
+        <a href="#projects">Projeler</a>
+        <a href="#contact">İletişim</a>
+    </div>
+</nav>
+
 <div id="particles"></div>
+
+<button id="themeToggleBtn" aria-label="Tema Değiştir">
+    <i class="fas fa-sun"></i> 
+</button>
 
 <header>
     <img src="https://r.resimlink.com/1UWyFE-XPxo.jpg" alt="Efe">
@@ -249,28 +362,54 @@ footer {
     <p>Merhaba! Ben Efe, web tasarımcıyım. Oyun oynamayı, müzik dinlemeyi ve arkadaşlarımla sohbet etmeyi çok severim.</p>
 </section>
 
+<section id="skills">
+    <h2>Yeteneklerim</h2>
+    <div class="skills-container">
+        <div class="skill-item"><i class="fab fa-html5"></i> HTML5</div>
+        <div class="skill-item"><i class="fab fa-css3-alt"></i> CSS3</div>
+        <div class="skill-item"><i class="fab fa-js"></i> JavaScript</div>
+        <div class="skill-item"><i class="fab fa-react"></i> React (Öğreniyorum)</div>
+        <div class="skill-item"><i class="fab fa-git-alt"></i> Git & GitHub</div>
+        <div class="skill-item"><i class="fas fa-terminal"></i> Terminal / Linux</div>
+    </div>
+</section>
+
 <section id="hobbies">
     <h2>Hobilerim</h2>
-    <div class="hobbies">
-        <div class="hobby">Oyun Oynamak <i class="fas fa-gamepad"></i></div>
-        <div class="hobby">Müzik Dinlemek <i class="fas fa-music"></i></div>
-        <div class="hobby">Arkadaşlarla Konuşmak <i class="fas fa-comments"></i></div>
+    <div class="hobbies-container">
+        <div class="hobby-item"><i class="fas fa-gamepad"></i> Oyun Oynamak</div>
+        <div class="hobby-item"><i class="fas fa-music"></i> Müzik Dinlemek</div>
+        <div class="hobby-item"><i class="fas fa-comments"></i> Arkadaşlarla Konuşmak</div>
+        <div class="hobby-item"><i class="fas fa-book-open"></i> Kitap Okumak</div>
+        <div class="hobby-item"><i class="fas fa-video"></i> Film/Dizi İzlemek</div>
     </div>
 </section>
 
 <section id="projects">
     <h2>Projelerim</h2>
     <div class="projects-container">
-        <div class="project">Mini Oyun Projesi <i class="fas fa-gamepad"></i></div>
-        <div class="project">Kişisel Web Sitesi <i class="fas fa-laptop-code"></i></div>
-        <div class="project">Müzik Arşivi <i class="fas fa-music"></i></div>
+        <a href="https://github.com/efepwx18/minigame" target="_blank" class="project-card">
+            <i class="fas fa-gamepad"></i> Mini Oyun Projesi
+        </a>
+        <a href="https://github.com/efepwx18/portfolio" target="_blank" class="project-card">
+            <i class="fas fa-laptop-code"></i> Kişisel Web Sitesi (Bu site!)
+        </a>
+        <a href="#" class="project-card">
+            <i class="fas fa-music"></i> Müzik Arşivi (Yapım Aşamasında)
+        </a>
+        <a href="#" class="project-card">
+            <i class="fas fa-code-branch"></i> GitHub Deposu (Daha fazlası için)
+        </a>
     </div>
 </section>
 
 <section id="social">
-    <h2>Sosyal Medya</h2>
-    <a href="https://www.instagram.com/efepwx18" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://t.me/wkrnc" target="_blank"><i class="fab fa-telegram"></i></a>
+    <h2>Sosyal Medya ve Paylaşım</h2>
+    <a href="https://www.instagram.com/efepwx18" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://t.me/wkrnc" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+    
+    <a href="#" id="shareTwitter" title="Twitter'da Paylaş"><i class="fab fa-twitter"></i></a>
+    <a href="#" id="shareLinkedIn" title="LinkedIn'de Paylaş"><i class="fab fa-linkedin-in"></i></a>
 </section>
 
 <section id="contact">
@@ -300,26 +439,78 @@ footer {
 </footer>
 
 <script>
-// Scroll Top
+// TEMA VE SCROLL BUTONU DEĞİŞKENLERİ
+const body = document.body;
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeIcon = themeToggleBtn.querySelector('i');
+const stickyNav = document.getElementById('stickyNav');
 const scrollBtn = document.getElementById('scrollTopBtn');
-scrollBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+const progressBar = document.getElementById("progressBar");
 
-// Audio
-const music = document.getElementById('bgMusic');
-const playBtn = document.getElementById('playPause');
-playBtn.addEventListener('click', () => {
-    if(music.paused){ music.play(); playBtn.textContent='⏸️'; }
-    else { music.pause(); playBtn.textContent='▶️'; }
-});
+// TEMA YÜKLEME VE DEĞİŞTİRME FONKSİYONLARI
+function loadTheme() {
+    const isLight = localStorage.getItem('theme') === 'light';
+    if (isLight) {
+        body.classList.add('light-mode');
+        themeIcon.className = 'fas fa-moon'; 
+    } else {
+        body.classList.remove('light-mode');
+        themeIcon.className = 'fas fa-sun'; 
+    }
+}
+function toggleTheme() {
+    const isLight = body.classList.toggle('light-mode');
+    if (isLight) {
+        localStorage.setItem('theme', 'light');
+        themeIcon.className = 'fas fa-moon';
+    } else {
+        localStorage.setItem('theme', 'dark');
+        themeIcon.className = 'fas fa-sun';
+    }
+}
+themeToggleBtn.addEventListener('click', toggleTheme);
+loadTheme();
 
-// Fade-in sections
-const sections = document.querySelectorAll('section');
+// SCROLL EVENT: Progress Bar, Sticky Nav, Scroll Top ve Fade-in hepsi tek bir olayda
 window.addEventListener('scroll', () => {
+    // 1. Progress Bar Logic
+    const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = window.scrollY;
+    const progress = (scrolled / totalHeight) * 100;
+    progressBar.style.width = progress + "%";
+
+    // 2. Sticky Nav Logic
+    if (window.scrollY > 100) { 
+        stickyNav.classList.add('visible');
+    } else {
+        stickyNav.classList.remove('visible');
+    }
+    
+    // 3. Scroll Top Button Logic
+    if (window.scrollY > 300) {
+        scrollBtn.classList.add('show');
+    } else {
+        scrollBtn.classList.remove('show');
+    }
+
+    // 4. Fade-in Sections Logic
+    const sections = document.querySelectorAll('section');
     sections.forEach(sec => {
         if(window.scrollY + window.innerHeight > sec.offsetTop + 100){
             sec.classList.add('visible');
         }
     });
+});
+
+// Scroll Top
+scrollBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+// Audio Controls
+const music = document.getElementById('bgMusic');
+const playBtn = document.getElementById('playPause');
+playBtn.addEventListener('click', () => {
+    if(music.paused){ music.play(); playBtn.textContent='⏸️'; }
+    else { music.pause(); playBtn.textContent='▶️'; }
 });
 
 // Form demo
@@ -329,6 +520,22 @@ form.addEventListener('submit', function(e) {
     e.preventDefault();
     status.textContent = "Mesaj gönderildi!";
     form.reset();
+});
+
+// Sosyal Medya Paylaşım Fonksiyonları
+const pageUrl = encodeURIComponent(window.location.href);
+const shareText = encodeURIComponent("Efe'nin harika kişisel web sitesine göz atın!");
+
+document.getElementById('shareTwitter').addEventListener('click', (e) => {
+    e.preventDefault();
+    const twitterUrl = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${shareText}`;
+    window.open(twitterUrl, '_blank', 'width=600,height=400');
+});
+
+document.getElementById('shareLinkedIn').addEventListener('click', (e) => {
+    e.preventDefault();
+    const linkedinUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${shareText}`;
+    window.open(linkedinUrl, '_blank', 'width=600,height=400');
 });
 
 // Particles
@@ -344,3 +551,5 @@ for(let i=0;i<100;i++){
 </script>
 </body>
 </html>
+
+    
