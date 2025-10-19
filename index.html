@@ -4,11 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Efe'nin Profili</title>
+<!-- Font Awesome kütüphanesi -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     body {
         font-family: 'Arial', sans-serif;
         margin: 0;
-        background: #121212;
+        background-color: #1a0d2a; /* Koyu mor */
         color: #f0f0f0;
         overflow-x: hidden;
     }
@@ -16,35 +18,31 @@
     header {
         text-align: center;
         padding: 30px 20px;
-        background: linear-gradient(90deg, #ffcc00, #ff9900);
+        background: linear-gradient(90deg, #6a0dad, #9b30ff);
     }
     header img {
         width: 150px;
         height: 150px;
         border-radius: 50%;
         border: 4px solid #fff;
-        animation: profileFade 2s ease-in-out;
     }
     header h1 {
         margin: 10px 0 0;
         font-size: 2.5em;
         color: #fff;
-        animation: fadeIn 2s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-20px);}
-        to { opacity: 1; transform: translateY(0);}
-    }
-    @keyframes profileFade {
-        from { opacity: 0; transform: scale(0);}
-        to { opacity: 1; transform: scale(1);}
     }
 
     section {
         padding: 30px 20px;
         max-width: 1000px;
         margin: auto;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.7s ease-out;
+    }
+    section.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     #about p {
@@ -58,15 +56,14 @@
         flex-wrap: wrap;
     }
     .hobby {
-        background: #333;
+        background: #2e0e4d; /* Koyu mor kutular */
         padding: 15px 25px;
         border-radius: 15px;
-        transition: transform 0.3s, background 0.3s;
+        transition: transform 0.3s, box-shadow 0.3s;
     }
     .hobby:hover {
-        transform: scale(1.1);
-        background: #ffcc00;
-        color: #121212;
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
         cursor: pointer;
     }
 
@@ -76,14 +73,28 @@
         gap: 20px;
     }
     .project {
-        background: #222;
+        background: #2e0e4d;
         padding: 20px;
         border-radius: 15px;
         transition: transform 0.3s, box-shadow 0.3s;
     }
     .project:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 20px rgba(255,204,0,0.5);
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
+    }
+
+    #social a {
+        color: #d8b0ff;
+        text-decoration: none;
+        font-weight: bold;
+        margin-right: 20px;
+        font-size: 1.2em;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    #social a:hover {
+        color: #fff;
     }
 
     form {
@@ -99,24 +110,37 @@
     }
     button {
         padding: 10px;
-        background: #ffcc00;
+        background: #9b30ff;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         font-weight: bold;
+        transition: all 0.3s;
+    }
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
     }
 
+    /* Minimalist audio button */
     .audio-controls {
         position: fixed;
         bottom: 20px;
         left: 20px;
-        background: #222;
-        padding: 10px 15px;
-        border-radius: 10px;
+        background: #2e0e4d;
+        padding: 8px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        justify-content: center;
+        box-shadow: 0 0 10px #6a0dad, 0 0 20px #9b30ff;
+    }
+    .audio-controls button {
+        border-radius: 50%;
+        padding: 8px 10px;
+        background: #9b30ff;
+        box-shadow: none;
+        font-size: 16px;
     }
 </style>
 </head>
@@ -148,12 +172,18 @@
     <div class="project">Proje 3: Müzik koleksiyonu</div>
 </section>
 
+<section id="social">
+    <h2>Sosyal Medya</h2>
+    <a href="https://www.instagram.com/efepwx18" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+    <a href="https://t.me/wkrnc" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+</section>
+
 <section id="contact">
     <h2>İletişim</h2>
     <form id="contactForm">
-        <input type="text" placeholder="Adın" required>
-        <input type="email" placeholder="Email" required>
-        <textarea placeholder="Mesajın" required></textarea>
+        <input type="text" name="name" placeholder="Adın" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <textarea name="message" placeholder="Mesajın" required></textarea>
         <button type="submit">Gönder</button>
     </form>
     <p id="status"></p>
@@ -168,22 +198,33 @@
 </div>
 
 <script>
+    // Scroll animasyonu
+    const sections = document.querySelectorAll('section');
+    window.addEventListener('scroll', () => {
+        sections.forEach(sec => {
+            const top = sec.getBoundingClientRect().top;
+            if(top < window.innerHeight - 100){
+                sec.classList.add('visible');
+            }
+        });
+    });
+
+    // Form demo
     const form = document.getElementById('contactForm');
     const status = document.getElementById('status');
-    const iframe = document.getElementById('backgroundMusic');
-    const playPauseBtn = document.getElementById('playPause');
-
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        status.textContent = "Mesaj gönderildi! (Bu demo, gerçek gönderim yok)";
+        status.textContent = "Mesaj gönderildi!";
         form.reset();
     });
 
+    // Müzik play/pause
+    const iframe = document.getElementById('backgroundMusic');
+    const playPauseBtn = document.getElementById('playPause');
     let isPlaying = true;
-
     playPauseBtn.addEventListener('click', () => {
         if(isPlaying){
-            iframe.src = ""; // iframe boşaltınca duruyor
+            iframe.src = "";
             playPauseBtn.textContent = "▶️";
         } else {
             iframe.src = "https://www.youtube.com/embed/tzhKxUxsIJs?autoplay=1&loop=1&playlist=tzhKxUxsIJs";
