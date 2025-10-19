@@ -4,147 +4,208 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Efe'nin Profili</title>
-<!-- Font Awesome kütüphanesi -->
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        background-color: #1a0d2a; /* Koyu mor */
-        color: #f0f0f0;
-        overflow-x: hidden;
-    }
+/* San Francisco font */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    background-color: #1a0d2a;
+    color: #f0f0f0;
+    overflow-x: hidden;
+    position: relative;
+}
 
-    header {
-        text-align: center;
-        padding: 30px 20px;
-        background: linear-gradient(90deg, #6a0dad, #9b30ff);
-    }
-    header img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        border: 4px solid #fff;
-    }
-    header h1 {
-        margin: 10px 0 0;
-        font-size: 2.5em;
-        color: #fff;
-    }
+/* Header */
+header {
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(90deg, #6a0dad, #9b30ff);
+}
+header img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+}
+header h1 {
+    margin: 10px 0 0;
+    font-size: 2.5em;
+    color: #fff;
+    text-shadow: 1px 1px 5px #9b30ff;
+}
 
-    section {
-        padding: 30px 20px;
-        max-width: 1000px;
-        margin: auto;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.7s ease-out;
-    }
-    section.visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Sections */
+section {
+    padding: 30px 20px;
+    max-width: 1000px;
+    margin: auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s ease-out;
+}
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
 
-    #about p {
-        font-size: 1.2em;
-        line-height: 1.6;
-    }
+/* About */
+#about p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
 
-    .hobbies {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-    .hobby {
-        background: #2e0e4d; /* Koyu mor kutular */
-        padding: 15px 25px;
-        border-radius: 15px;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .hobby:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
-        cursor: pointer;
-    }
+/* Hobbies */
+.hobbies {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.hobby {
+    background: #2e0e4d;
+    padding: 15px 25px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.hobby:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
+    cursor: pointer;
+}
+.hobby i {
+    margin-right: 8px;
+    animation: float 1.5s infinite alternate;
+}
+@keyframes float {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-5px); }
+}
 
-    #projects {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-    }
-    .project {
-        background: #2e0e4d;
-        padding: 20px;
-        border-radius: 15px;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .project:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
-    }
+/* Projects */
+#projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.project {
+    background: #2e0e4d;
+    padding: 20px;
+    border-radius: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.project:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px #9b30ff, 0 0 40px #6a0dad;
+}
 
-    #social a {
-        color: #d8b0ff;
-        text-decoration: none;
-        font-weight: bold;
-        margin-right: 20px;
-        font-size: 1.2em;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-    #social a:hover {
-        color: #fff;
-    }
+/* Social */
+#social a {
+    color: #d8b0ff;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 20px;
+    font-size: 1.2em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+#social a:hover {
+    color: #fff;
+}
 
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        max-width: 400px;
-    }
-    input, textarea {
-        padding: 10px;
-        border-radius: 5px;
-        border: none;
-    }
-    button {
-        padding: 10px;
-        background: #9b30ff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-    button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
-    }
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+}
+input, textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+button {
+    padding: 10px;
+    background: #9b30ff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
+}
 
-    /* Minimalist audio button */
-    .audio-controls {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        background: #2e0e4d;
-        padding: 8px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 0 10px #6a0dad, 0 0 20px #9b30ff;
-    }
-    .audio-controls button {
-        border-radius: 50%;
-        padding: 8px 10px;
-        background: #9b30ff;
-        box-shadow: none;
-        font-size: 16px;
-    }
+/* Minimalist audio button */
+.audio-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #2e0e4d;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px #6a0dad, 0 0 20px #9b30ff;
+}
+.audio-controls button {
+    border-radius: 50%;
+    padding: 8px 10px;
+    background: #9b30ff;
+    box-shadow: none;
+    font-size: 16px;
+}
+
+/* Scroll-top button */
+#scrollTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
+    background: #9b30ff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 0 10px #d8b0ff, 0 0 20px #6a0dad;
+    display: none;
+}
+
+/* Particle background */
+#particles {
+    position: fixed;
+    top:0; left:0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #9b30ff;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: particleMove 10s linear infinite;
+}
+@keyframes particleMove {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-1000px) translateX(500px); }
+}
 </style>
 </head>
 <body>
+
+<!-- Particle background -->
+<div id="particles"></div>
 
 <header>
     <img src="https://r.resimlink.com/1UWyFE-XPxo.jpg" alt="Efe">
@@ -153,15 +214,15 @@
 
 <section id="about">
     <h2>Hakkımda</h2>
-    <p>Merhaba! Ben Efe. Oyun oynamayı, müzik dinlemeyi ve arkadaşlarımla sohbet etmeyi çok severim. Burada kendimi tanıtıyor ve hobilerim hakkında kısa bir bakış sunuyorum. Arka planda çalan müzikle bu deneyimi daha keyifli hale getirdim.</p>
+    <p>Merhaba! Ben Efe. Oyun oynamayı, müzik dinlemeyi ve arkadaşlarımla sohbet etmeyi çok severim.</p>
 </section>
 
 <section id="hobbies">
     <h2>Hobilerim</h2>
     <div class="hobbies">
-        <div class="hobby">Oyun Oynamak</div>
-        <div class="hobby">Müzik Dinlemek</div>
-        <div class="hobby">Arkadaşlarla Konuşmak</div>
+        <div class="hobby"><i class="fas fa-gamepad"></i>Oyun Oynamak</div>
+        <div class="hobby"><i class="fas fa-music"></i>Müzik Dinlemek</div>
+        <div class="hobby"><i class="fas fa-comments"></i>Arkadaşlarla Konuşmak</div>
     </div>
 </section>
 
@@ -189,50 +250,77 @@
     <p id="status"></p>
 </section>
 
+<!-- Audio controls -->
 <div class="audio-controls">
     <button id="playPause">⏸</button>
     <iframe id="backgroundMusic" width="0" height="0" 
         src="https://www.youtube.com/embed/tzhKxUxsIJs?autoplay=1&loop=1&playlist=tzhKxUxsIJs" 
-        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+        frameborder="0" allow="autoplay" allowfullscreen>
     </iframe>
 </div>
 
+<!-- Scroll top button -->
+<button id="scrollTopBtn">↑</button>
+
 <script>
-    // Scroll animasyonu
-    const sections = document.querySelectorAll('section');
-    window.addEventListener('scroll', () => {
-        sections.forEach(sec => {
-            const top = sec.getBoundingClientRect().top;
-            if(top < window.innerHeight - 100){
-                sec.classList.add('visible');
-            }
-        });
-    });
-
-    // Form demo
-    const form = document.getElementById('contactForm');
-    const status = document.getElementById('status');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        status.textContent = "Mesaj gönderildi!";
-        form.reset();
-    });
-
-    // Müzik play/pause
-    const iframe = document.getElementById('backgroundMusic');
-    const playPauseBtn = document.getElementById('playPause');
-    let isPlaying = true;
-    playPauseBtn.addEventListener('click', () => {
-        if(isPlaying){
-            iframe.src = "";
-            playPauseBtn.textContent = "▶️";
-        } else {
-            iframe.src = "https://www.youtube.com/embed/tzhKxUxsIJs?autoplay=1&loop=1&playlist=tzhKxUxsIJs";
-            playPauseBtn.textContent = "⏸";
+// Scroll animasyonu
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll', () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if(top < window.innerHeight - 100){
+            sec.classList.add('visible');
         }
-        isPlaying = !isPlaying;
     });
+
+    // Scroll-top butonu
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    if(window.scrollY > 300){
+        scrollBtn.style.display = 'block';
+    } else {
+        scrollBtn.style.display = 'none';
+    }
+});
+
+// Scroll top
+document.getElementById('scrollTopBtn').addEventListener('click', () => {
+    window.scrollTo({top:0, behavior:'smooth'});
+});
+
+// Form demo
+const form = document.getElementById('contactForm');
+const status = document.getElementById('status');
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    status.textContent = "Mesaj gönderildi! (Bu demo, gerçek gönderim yok)";
+    form.reset();
+});
+
+// Müzik play/pause
+const iframe = document.getElementById('backgroundMusic');
+const playPauseBtn = document.getElementById('playPause');
+let isPlaying = true;
+playPauseBtn.addEventListener('click', () => {
+    if(isPlaying){
+        iframe.src = "";
+        playPauseBtn.textContent = "▶️";
+    } else {
+        iframe.src = "https://www.youtube.com/embed/tzhKxUxsIJs?autoplay=1&loop=1&playlist=tzhKxUxsIJs";
+        playPauseBtn.textContent = "⏸";
+    }
+    isPlaying = !isPlaying;
+});
+
+// Particles
+const particleContainer = document.getElementById('particles');
+for(let i=0;i<50;i++){
+    const p = document.createElement('div');
+    p.classList.add('particle');
+    p.style.top = Math.random()*window.innerHeight+'px';
+    p.style.left = Math.random()*window.innerWidth+'px';
+    particleContainer.appendChild(p);
+}
 </script>
 
 </body>
-</html>
+    </html>
