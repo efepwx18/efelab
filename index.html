@@ -486,14 +486,15 @@ button:hover ~ .cursor-follower {
 
 <section id="contact">
     <h2>İletişim</h2>
-    <form id="contactForm">
-        <input type="text" name="name" placeholder="Adın" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <textarea name="message" placeholder="Mesajın" required></textarea>
+    <form id="contactForm" action="https://formspree.io/f/mnngyjzq" method="POST"> 
+        <input type="text" name="Ad" placeholder="Adın" required>
+        <input type="email" name="Email" placeholder="Email" required>
+        <textarea name="Mesaj" placeholder="Mesajın" required></textarea>
         <button type="submit">Gönder</button>
     </form>
     <p id="status"></p>
 </section>
+
 
 <div class="audio-controls">
     <div>Şarkıyı buradan açabilirsin</div>
@@ -593,28 +594,47 @@ playBtn.addEventListener('click', () => {
     else { music.pause(); playBtn.textContent='▶️'; }
 });
 
-// Form demo (Status Görünürlüğü Düzeltildi)
+// Form demo (Formspree Entegrasyonu)
 const form = document.getElementById('contactForm');
 const status = document.getElementById('status');
 
-// Sayfa yüklendiğinde status'ü gizle
-window.addEventListener('load', () => {
-    status.classList.remove('visible'); 
-});
+form.addEventListener('submit', async function(e) {
+    e.preventDefault(); // Varsayılan formu gönderme işlemini durdur
 
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
+    // Formspree URL'i ve formu yakala
+    const data = new FormData(e.target);
     
-    // Mesajı göster
-    status.textContent = "Mesajınız başarıyla gönderildi! Teşekkür ederim. 😊";
-    status.classList.add('visible'); 
-    form.reset();
-    
-    // 5 saniye sonra mesajı gizle
+    try {
+        const response = await fetch(e.target.action, {
+            method: form.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            // Başarılı gönderim
+            status.textContent = "Mesajınız başarıyla gönderildi! Teşekkür ederim. 😊";
+            status.classList.add('visible'); 
+            form.reset(); // Formu temizle
+        } else {
+            // Başarısız gönderim (örn: reCAPTCHA hatası)
+            status.textContent = "Hata oluştu! Lütfen tekrar deneyin veya bana e-posta gönderin. 😔";
+            status.classList.add('visible'); 
+        }
+    } catch (error) {
+        // Ağ hatası
+        status.textContent = "Ağ hatası! İnternet bağlantınızı kontrol edin. 📡";
+        status.classList.add('visible'); 
+    }
+
+    // 5 saniye sonra mesajı gizle (hata veya başarı durumunda)
     setTimeout(() => {
         status.classList.remove('visible');
     }, 5000);
 });
+
 
 // Sosyal Medya Paylaşım Fonksiyonları
 const pageUrl = encodeURIComponent(window.location.href);
@@ -666,4 +686,3 @@ for(let i=0;i<100;i++){
 </script>
 </body>
 </html>
-            
